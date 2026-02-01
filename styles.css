@@ -1,0 +1,1437 @@
+/* ==========================================
+   متغیرهای CSS (رفع ایراد شماره‌های جادویی)
+   ========================================== */
+:root {
+  /* رنگ‌های اصلی */
+  --primary-bg: #0f0f1b;
+  --secondary-bg: #161a29;
+  --accent-color: #0d2a4d;
+  --highlight: #e94560;
+  --neon-pulse: #ff00ff;
+  --text-primary: #f0f0ff;
+  --text-secondary: #b0b0c5;
+  --border-color: #2a2f45;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  
+  /* ابعاد */
+  --sidebar-width: 280px;
+  --header-height: 64px;
+  --console-height: 260px;
+  --modal-width: 450px;
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  
+  /* سایه‌ها */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --shadow-neon: 0 0 15px rgba(233, 69, 96, 0.5);
+  
+  /* انیمیشن */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* z-indexها */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-notification: 1080;
+  --z-loading: 1090;
+}
+
+/* ==========================================
+   ریست و استایل‌های پایه
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  direction: rtl;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   تایپوگرافی
+   ========================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+/* ==========================================
+   هشدار موبایل
+   ========================================== */
+.mobile-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 27, 0.97);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-notification);
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+.mobile-warning.show {
+  display: flex;
+}
+
+.mobile-warning h2 {
+  font-size: 1.75rem;
+  color: var(--highlight);
+  margin-bottom: 20px;
+  text-shadow: var(--shadow-neon);
+}
+
+.mobile-warning p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+/* ==========================================
+   هدر اصلی
+   ========================================== */
+.header {
+  height: var(--header-height);
+  background: linear-gradient(90deg, var(--secondary-bg) 0%, #1a1e35 100%);
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: relative;
+  z-index: var(--z-fixed);
+  box-shadow: var(--shadow-md);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--highlight);
+  text-shadow: 0 0 12px rgba(233, 69, 96, 0.6);
+  user-select: none;
+}
+
+.logo i {
+  font-size: 1.875rem;
+  background: linear-gradient(45deg, #e94560, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: neonPulse 2s infinite alternate;
+}
+
+.version {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+@keyframes neonPulse {
+  from {
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.8), 0 0 10px rgba(233, 69, 96, 0.6);
+  }
+  to {
+    text-shadow: 0 0 15px rgba(233, 69, 96, 1), 0 0 25px rgba(233, 69, 96, 0.9), 0 0 35px rgba(233, 69, 96, 0.8);
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ==========================================
+   دکمه‌ها
+   ========================================== */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.3);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn:hover::after {
+  transform: translateX(100%);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--highlight), #ff2a5d);
+  color: white;
+  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: linear-gradient(45deg, var(--accent-color), #1a3a6d);
+  color: var(--text-primary);
+  box-shadow: 0 3px 10px rgba(13, 42, 77, 0.3);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(45deg, #0f3460, #1e4a80);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background: linear-gradient(45deg, var(--success), #1ee0a0);
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-icon {
+  background: rgba(30, 35, 60, 0.7);
+  color: var(--text-secondary);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+  padding: 0;
+}
+
+.btn-icon:hover {
+  background: var(--accent-color);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.btn-icon:active, .btn-icon.active {
+  background: var(--highlight);
+  color: white;
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   کانتینر اصلی
+   ========================================== */
+.main-container {
+  display: flex;
+  height: calc(100vh - var(--header-height));
+  transition: opacity var(--transition-normal);
+}
+
+.main-container.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ==========================================
+   سایدبار و درخت فایل
+   ========================================== */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--secondary-bg);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 16px;
+  background: linear-gradient(90deg, var(--accent-color), #122f5a);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.file-tree-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background: rgba(22, 26, 41, 0.6);
+  position: relative;
+}
+
+/* استایل‌های jstree سفارشی */
+.jstree-default .jstree-clicked {
+  background: linear-gradient(90deg, var(--highlight), #ff2a5d) !important;
+  color: white !important;
+  border-radius: var(--border-radius);
+}
+
+.jstree-default .jstree-hovered {
+  background: rgba(233, 69, 96, 0.15) !important;
+  border-radius: var(--border-radius);
+}
+
+.jstree-default .jstree-anchor {
+  color: var(--text-primary) !important;
+  font-size: 0.875rem;
+  padding: 6px 8px !important;
+  border-radius: var(--border-radius);
+  transition: background var(--transition-fast);
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+.jstree-default .jstree-icon {
+  color: var(--text-secondary) !important;
+}
+
+.jstree-default .jstree-themeicon {
+  margin-right: 6px !important;
+}
+
+/* ==========================================
+   ناحیه ویرایشگر
+   ========================================== */
+.editor-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--primary-bg);
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(22, 26, 41, 0.7);
+  border-bottom: 1px solid var(--border-color);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.breadcrumb span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb span:not(:last-child)::after {
+  content: '>';
+  margin: 0 8px;
+  color: var(--text-secondary);
+}
+
+.breadcrumb span:last-child {
+  color: var(--highlight);
+  font-weight: 600;
+}
+
+.tabs-container {
+  background: linear-gradient(90deg, var(--accent-color), #142540);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+  border-bottom: 2px solid var(--border-color);
+  overflow-x: auto;
+  min-height: 44px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) transparent;
+}
+
+.tabs-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tabs-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabs-container::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+  position: relative;
+  height: 36px;
+}
+
+.tab:hover {
+  background: rgba(233, 69, 96, 0.12);
+  color: var(--text-primary);
+}
+
+.tab.active {
+  background: var(--primary-bg);
+  color: var(--highlight);
+  font-weight: 700;
+  box-shadow: inset 0 -3px 0 var(--highlight);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--highlight);
+  border-radius: 2px 2px 0 0;
+}
+
+.tab-close {
+  opacity: 0.7;
+  font-size: 0.875rem;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+  margin-right: 4px;
+}
+
+.tab-close:hover {
+  opacity: 1;
+  background: var(--danger);
+  color: white;
+  transform: scale(1.1);
+}
+
+.editor-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-wrapper {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+.editor-wrapper.active {
+  display: block;
+}
+
+/* استایل‌های CodeMirror سفارشی */
+.CodeMirror {
+  height: 100% !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  font-size: 15px !important;
+  direction: ltr !important;
+  text-align: left !important;
+  line-height: 1.6 !important;
+}
+
+.CodeMirror-gutters {
+  background: var(--secondary-bg) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.CodeMirror-linenumber {
+  color: var(--text-secondary) !important;
+}
+
+/* ==========================================
+   ناحیه پیش‌نمایش
+   ========================================== */
+.preview-section {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  background: var(--secondary-bg);
+  border-right: 1px solid var(--border-color);
+  flex-shrink: 0;
+  transition: width var(--transition-slow);
+}
+
+.preview-section.collapsed {
+  width: 60px;
+  overflow: hidden;
+}
+
+.preview-header {
+  background: linear-gradient(90deg, var(--accent-color), #122f5a);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.preview-header h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity var(--transition-normal);
+}
+
+.preview-section.collapsed .preview-header h3 {
+  opacity: 0;
+}
+
+.preview-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.device-selector {
+  display: flex;
+  gap: 6px;
+  background: rgba(15, 25, 45, 0.8);
+  padding: 5px;
+  border-radius: var(--border-radius-lg);
+  transition: opacity var(--transition-normal);
+}
+
+.preview-section.collapsed .device-selector {
+  opacity: 0;
+}
+
+.device-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.device-btn:hover {
+  color: var(--text-primary);
+  background: rgba(30, 40, 70, 0.7);
+}
+
+.device-btn.active {
+  background: var(--highlight);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(233, 69, 96, 0.4);
+}
+
+.preview-frame-container {
+  flex: 1;
+  background: #0a0a15;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 25px;
+  position: relative;
+}
+
+.preview-frame-wrapper {
+  width: 100%;
+  height: 100%;
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--border-radius-xl);
+  overflow: hidden;
+  background: white;
+  position: relative;
+  transform-origin: center;
+}
+
+/* شبیه‌سازی نوار بالای پنجره پیش‌نمایش */
+.preview-frame-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: rgba(30, 35, 60, 0.9);
+  z-index: var(--z-fixed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.preview-frame-wrapper::after {
+  content: 'پیش‌نمایش زنده';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: calc(var(--z-fixed) + 1);
+}
+
+.preview-frame-wrapper::before div {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  margin: 0 3px;
+}
+
+.preview-frame-wrapper::before div:nth-child(2) {
+  background: #ffbd2e;
+}
+
+.preview-frame-wrapper::before div:nth-child(3) {
+  background: #28ca42;
+}
+
+.preview-frame-wrapper.mobile {
+  width: 375px;
+  height: 667px;
+  transform: scale(0.9);
+}
+
+.preview-frame-wrapper.tablet {
+  width: 768px;
+  height: 1024px;
+  transform: scale(0.95);
+}
+
+#previewFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+/* ==========================================
+   کنسول
+   ========================================== */
+.console-section {
+  height: var(--console-height);
+  background: var(--secondary-bg);
+  border-top: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  resize: vertical;
+  overflow: hidden;
+  min-height: 160px;
+  max-height: 500px;
+  transition: height var(--transition-normal);
+}
+
+.console-header {
+  background: linear-gradient(90deg, var(--accent-color), #122f5a);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.console-tabs {
+  display: flex;
+  gap: 20px;
+  margin-left: 15px;
+}
+
+.console-tab {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border-bottom: 3px solid transparent;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.console-tab:hover {
+  color: var(--text-primary);
+}
+
+.console-tab.active {
+  color: var(--highlight);
+  border-bottom-color: var(--highlight);
+  font-weight: 600;
+}
+
+.console-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  direction: ltr;
+  text-align: left;
+  background: rgba(15, 18, 30, 0.7);
+  line-height: 1.6;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) var(--primary-bg);
+}
+
+.console-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.console-output::-webkit-scrollbar-track {
+  background: var(--primary-bg);
+}
+
+.console-output::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+.console-message {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: var(--border-radius);
+  border-right: 3px solid transparent;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.console-message.log {
+  background: rgba(59, 130, 246, 0.12);
+  border-right-color: var(--info);
+  color: #93c5fd;
+}
+
+.console-message.error {
+  background: rgba(239, 68, 68, 0.15);
+  border-right-color: var(--danger);
+  color: #fca5a5;
+}
+
+.console-message.warn {
+  background: rgba(245, 158, 11, 0.12);
+  border-right-color: var(--warning);
+  color: #fcd34d;
+}
+
+.console-message.info {
+  background: rgba(16, 185, 129, 0.12);
+  border-right-color: var(--success);
+  color: #6ee7b7;
+}
+
+.console-icon {
+  flex-shrink: 0;
+  width: 18px;
+  margin-top: 3px;
+}
+
+.console-time {
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  flex-shrink: 0;
+  direction: ltr;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 3px;
+}
+
+.console-message-content {
+  flex: 1;
+  word-break: break-word;
+  white-space: pre-wrap;
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: embed;
+}
+
+/* ==========================================
+   منوی زمینه
+   ========================================== */
+.context-menu {
+  position: fixed;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 8px;
+  min-width: 220px;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-popover);
+  display: none;
+  animation: contextMenuSlide 0.15s ease-out;
+}
+
+@keyframes contextMenuSlide {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.context-menu-item {
+  padding: 11px 16px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.context-menu-item:hover {
+  background: rgba(233, 69, 96, 0.15);
+  color: var(--highlight);
+}
+
+.context-menu-item i {
+  width: 18px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.context-menu-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 8px 0;
+}
+
+/* ==========================================
+   مودال
+   ========================================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 20, 0.92);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-modal-backdrop);
+  backdrop-filter: blur(6px);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, var(--secondary-bg), #1a1f35);
+  border-radius: var(--border-radius-xl);
+  padding: 30px;
+  min-width: var(--modal-width);
+  max-width: 550px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  position: relative;
+  transform: translateY(20px);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes modalSlideIn {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  font-size: 1.375rem;
+  color: var(--highlight);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-close {
+  background: rgba(30, 35, 60, 0.7);
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.625rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-lg);
+  transition: all var(--transition-normal);
+}
+
+.modal-close:hover {
+  background: var(--accent-color);
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(25, 30, 50, 0.8);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  color: var(--text-primary);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.2);
+  background: rgba(30, 35, 65, 0.9);
+}
+
+select.form-control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a8a8a8' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 15px center;
+  background-size: 20px;
+  padding-left: 45px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ==========================================
+   نوتیفیکیشن
+   ========================================== */
+.notification {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: linear-gradient(145deg, var(--secondary-bg), #1a1f35);
+  padding: 16px 25px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: var(--z-notification);
+  opacity: 0;
+  transition: all var(--transition-normal);
+  pointer-events: none;
+  border-right: 4px solid var(--success);
+  min-width: 320px;
+  max-width: 500px;
+  animation: notificationSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes notificationSlide {
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.notification.hide {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px);
+}
+
+.notification.error {
+  border-right-color: var(--danger);
+}
+
+.notification.warning {
+  border-right-color: var(--warning);
+}
+
+.notification.info {
+  border-right-color: var(--info);
+}
+
+.notification i {
+  font-size: 1.5rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.notification.error i {
+  color: var(--danger);
+}
+
+.notification.warning i {
+  color: var(--warning);
+}
+
+.notification.success i {
+  color: var(--success);
+}
+
+.notification.info i {
+  color: var(--info);
+}
+
+.notification-content {
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* ==========================================
+   لودینگ
+   ========================================== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 20, 0.96);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-loading);
+  flex-direction: column;
+  gap: 30px;
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.spinner {
+  width: 65px;
+  height: 65px;
+  border: 5px solid rgba(13, 42, 77, 0.6);
+  border-top-color: var(--highlight);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+/* ==========================================
+   اسکرول بار سفارشی
+   ========================================== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 5px;
+  border: 3px solid var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
+}
+
+/* ==========================================
+   آیکون‌های فایل
+   ========================================== */
+.file-icon.html {
+  color: #e34c26;
+}
+
+.file-icon.css {
+  color: #264de4;
+}
+
+.file-icon.js {
+  color: #f0db4f;
+}
+
+.file-icon.json {
+  color: #5382a1;
+}
+
+.file-icon.md {
+  color: #083fa1;
+}
+
+.file-icon.txt {
+  color: #888;
+}
+
+.file-icon.folder {
+  color: #f39c12;
+}
+
+/* ==========================================
+   استایل‌های درگ و دراپ
+   ========================================== */
+.drag-over {
+  border-color: var(--highlight) !important;
+  box-shadow: 0 0 25px rgba(233, 69, 96, 0.4) !important;
+  background: rgba(233, 69, 96, 0.05) !important;
+}
+
+/* ==========================================
+   واکنش‌گرایی (رسپانسیو)
+   ========================================== */
+@media (max-width: 768px) {
+  .mobile-warning {
+    display: flex;
+  }
+  
+  .main-container {
+    display: none;
+  }
+  
+  .header-actions .btn:not(.btn-icon) span {
+    display: none;
+  }
+  
+  .header-actions .btn:not(.btn-icon) {
+    padding: 10px;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 1100px) {
+  .preview-section {
+    width: 380px;
+  }
+  
+  .preview-frame-wrapper.mobile {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 900px) {
+  .preview-section {
+    width: 320px;
+  }
+  
+  .preview-header h3,
+  .device-selector {
+    opacity: 0;
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .preview-controls {
+    gap: 4px;
+  }
+  
+  .device-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+  }
+  
+  .sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .preview-section {
+    position: fixed;
+    right: 0;
+    top: var(--header-height);
+    bottom: var(--console-height);
+    z-index: var(--z-fixed);
+    width: 100%;
+  }
+  
+  .preview-section.collapsed {
+    width: 60px;
+  }
+  
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    bottom: var(--console-height);
+    z-index: var(--z-fixed);
+  }
+  
+  .editor-area {
+    margin-right: 0;
+  }
+}
+
+/* ==========================================
+   حالت‌های focus برای دسترسی بهتر
+   ========================================== */
+*:focus-visible {
+  outline: 2px solid var(--highlight);
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   استایل‌های کمکی
+   ========================================== */
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================
+   استایل‌های خاص برای حالت‌های مختلف
+   ========================================== */
+body.dark-mode {
+  --primary-bg: #0a0a12;
+  --secondary-bg: #121625;
+  --text-primary: #e0e0ff;
+  --text-secondary: #9090b0;
+}
+
+body.high-contrast {
+  --primary-bg: #000000;
+  --secondary-bg: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --highlight: #ff3366;
+}
+
+/* ==========================================
+   انیمیشن‌های اضافی
+   ========================================== */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* ==========================================
+   استایل‌های چاپ
+   ========================================== */
+@media print {
+  .mobile-warning,
+  .header,
+  .sidebar,
+  .preview-section,
+  .console-section,
+  .context-menu,
+  .modal,
+  .notification,
+  .loading-overlay {
+    display: none !important;
+  }
+  
+  .main-container {
+    height: auto;
+    overflow: visible;
+  }
+  
+  .editor-area {
+    width: 100%;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}
