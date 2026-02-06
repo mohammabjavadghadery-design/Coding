@@ -1,264 +1,529 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data:; frame-src 'self'; connect-src 'self'">
-  <title>ویرایشگر کد حرفه‌ای | نسخه ۴.۱ (اصلاح‌شده)</title>
-  
-  <!-- فونت فارسی حرفه‌ای Vazirmatn -->
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- CodeMirror -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/monokai.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
-  
-  <!-- jstree -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/themes/default/style.min.css">
-  
-  <!-- فایل CSS داخلی -->
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>🚀 ویرایشگر کد پیشرفته | Advanced Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/comment/comment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/search.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/searchcursor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/dialog/dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/dialog/dialog.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/display/autorefresh.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
 </head>
 <body>
-  <!-- هشدار دستگاه موبایل -->
-  <div class="mobile-warning" id="mobileWarning">
-    <h2><i class="fas fa-desktop"></i> این ویرایشگر برای دسکتاپ بهینه‌شده است</h2>
-    <p>برای تجربه بهتر، از مرورگر دسکتاپ استفاده کنید یا حالت «نمایش سایت دسکتاپ» را در موبایل فعال کنید.</p>
-    <button class="btn btn-primary" id="closeMobileWarning">
-      <i class="fas fa-times"></i> بستن و ادامه
-    </button>
-  </div>
-
-  <!-- هدر اصلی -->
-  <header class="header">
-    <div class="logo">
-      <i class="fas fa-code"></i>
-      <span>ویرایشگر کد حرفه‌ای <span class="version">v4.1</span></span>
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-icon" id="undoBtn" title="بازگشت (Ctrl+Z)">
-        <i class="fas fa-undo"></i>
-      </button>
-      <button class="btn btn-icon" id="redoBtn" title="جلو (Ctrl+Y)">
-        <i class="fas fa-redo"></i>
-      </button>
-      <button class="btn btn-secondary" id="formatBtn">
-        <i class="fas fa-magic"></i>
-        فرمت کد
-      </button>
-      <button class="btn btn-success" id="runBtn">
-        <i class="fas fa-play"></i>
-        اجرا
-      </button>
-      <button class="btn btn-primary" id="downloadProjectBtn">
-        <i class="fas fa-download"></i>
-        دانلود پروژه
-      </button>
-      <button class="btn btn-icon" id="settingsBtn" title="تنظیمات">
-        <i class="fas fa-cog"></i>
-      </button>
-    </div>
-  </header>
-
-  <!-- بقیه ساختار اصلی -->
-  <div class="main-container" id="mainContainer">
-    <!-- سایدبار فایل‌ها -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h3><i class="fas fa-folder-tree"></i> فایل‌های پروژه</h3>
-        <div class="sidebar-actions">
-          <button class="btn btn-icon" id="newFolderBtn" title="پوشه جدید">
-            <i class="fas fa-folder-plus"></i>
-          </button>
-          <button class="btn btn-icon" id="newFileBtn" title="فایل جدید">
-            <i class="fas fa-file-plus"></i>
-          </button>
-          <button class="btn btn-icon" id="uploadFileBtn" title="آپلود فایل">
-            <i class="fas fa-upload"></i>
-          </button>
+    <!-- بارگذاری -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <div class="loading-text">
+                <h2>🚀 در حال بارگذاری ویرایشگر پیشرفته</h2>
+                <p>لطفاً چند لحظه صبر کنید...</p>
+                <div class="loading-progress">
+                    <div class="progress-bar" id="loading-progress"></div>
+                </div>
+                <div class="loading-stats">
+                    <div class="stat">
+                        <i class="fas fa-code"></i>
+                        <span>بارگذاری ویرایشگر کد</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-bolt"></i>
+                        <span>راه‌اندازی موتور اجرا</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-database"></i>
+                        <span>بارگذاری تاریخچه پروژه</span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="file-tree-container" id="fileTreeContainer">
-        <div id="fileTree"></div>
-      </div>
+    </div>
+
+    <!-- نوار بالایی اصلی -->
+    <header class="main-header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>ویرایشگر کد پیشرفته</h1>
+                <span class="version">v3.0</span>
+            </div>
+            
+            <div class="project-info">
+                <div class="project-name">
+                    <i class="fas fa-folder"></i>
+                    <input type="text" id="project-name" value="پروژه-جدید" placeholder="نام پروژه">
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator online" id="status-indicator">
+                        <i class="fas fa-circle"></i> آنلاین
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <div class="execution-controls">
+                <button class="btn btn-run" id="btn-run">
+                    <i class="fas fa-play"></i>
+                    <span>اجرا</span>
+                    <span class="shortcut">F5</span>
+                </button>
+                <button class="btn btn-stop" id="btn-stop">
+                    <i class="fas fa-stop"></i>
+                    <span>توقف</span>
+                </button>
+                <div class="execution-timer" id="execution-timer">
+                    <i class="fas fa-clock"></i>
+                    <span>0.00s</span>
+                </div>
+                <div class="fps-counter" id="fps-counter">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>60 FPS</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <div class="user-actions">
+                <button class="btn btn-save" id="btn-save">
+                    <i class="fas fa-save"></i>
+                    <span>ذخیره</span>
+                    <span class="shortcut">Ctrl+S</span>
+                </button>
+                <button class="btn btn-share" id="btn-share">
+                    <i class="fas fa-share-alt"></i>
+                    <span>اشتراک</span>
+                </button>
+                <div class="user-menu">
+                    <button class="btn btn-user" id="btn-user">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- نوار ابزار اصلی -->
+    <nav class="main-toolbar">
+        <div class="toolbar-section">
+            <button class="tool-btn" id="btn-file-manager">
+                <i class="fas fa-folder-open"></i>
+                <span>مدیر فایل</span>
+            </button>
+            <button class="tool-btn" id="btn-components">
+                <i class="fas fa-puzzle-piece"></i>
+                <span>کامپوننت‌ها</span>
+            </button>
+            <button class="tool-btn" id="btn-templates">
+                <i class="fas fa-layer-group"></i>
+                <span>قالب‌ها</span>
+            </button>
+        </div>
+        
+        <div class="toolbar-section">
+            <div class="live-update-control">
+                <label class="switch">
+                    <input type="checkbox" id="live-update-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span>اجرای زنده</span>
+                <select id="live-update-delay">
+                    <option value="100">0.1 ثانیه</option>
+                    <option value="250" selected>0.25 ثانیه</option>
+                    <option value="500">0.5 ثانیه</option>
+                    <option value="1000">1 ثانیه</option>
+                    <option value="2000">2 ثانیه</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="toolbar-section">
+            <button class="tool-btn" id="btn-zoom-in">
+                <i class="fas fa-search-plus"></i>
+                <span>بزرگنمایی</span>
+            </button>
+            <div class="zoom-control">
+                <button class="zoom-btn" id="btn-zoom-out">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <span class="zoom-level" id="zoom-level">100%</span>
+                <button class="zoom-btn" id="btn-zoom-reset">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+            </div>
+            <button class="tool-btn" id="btn-fullscreen">
+                <i class="fas fa-expand"></i>
+                <span>تمام صفحه</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+        <!-- پنل سمت چپ - ویرایشگر و فایل‌ها -->
+        <div class="left-panel">
+            <!-- تب‌های ویرایشگر -->
+            <div class="editor-tabs">
+                <div class="tabs-container">
+                    <div class="tab active" data-tab="html">
+                        <i class="fab fa-html5"></i>
+                        <span>index.html</span>
+                        <button class="tab-close" data-tab="html">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="tab" data-tab="css">
+                        <i class="fab fa-css3-alt"></i>
+                        <span>style.css</span>
+                        <button class="tab-close" data-tab="css">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="tab" data-tab="js">
+                        <i class="fab fa-js-square"></i>
+                        <span>script.js</span>
+                        <button class="tab-close" data-tab="js">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="tab-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ویرایشگرهای کد -->
+            <div class="code-editors">
+                <div class="editor-container active" id="editor-html">
+                    <div class="editor-header">
+                        <span>HTML</span>
+                        <div class="editor-stats">
+                            <span class="lines">خطوط: <span id="html-lines">0</span></span>
+                            <span class="chars">کاراکترها: <span id="html-chars">0</span></span>
+                        </div>
+                    </div>
+                    <textarea id="html-code" class="code-editor-textarea"></textarea>
+                </div>
+                
+                <div class="editor-container" id="editor-css">
+                    <div class="editor-header">
+                        <span>CSS</span>
+                        <div class="editor-stats">
+                            <span class="lines">خطوط: <span id="css-lines">0</span></span>
+                            <span class="chars">کاراکترها: <span id="css-chars">0</span></span>
+                        </div>
+                    </div>
+                    <textarea id="css-code" class="code-editor-textarea"></textarea>
+                </div>
+                
+                <div class="editor-container" id="editor-js">
+                    <div class="editor-header">
+                        <span>JavaScript</span>
+                        <div class="editor-stats">
+                            <span class="lines">خطوط: <span id="js-lines">0</span></span>
+                            <span class="chars">کاراکترها: <span id="js-chars">0</span></span>
+                        </div>
+                    </div>
+                    <textarea id="js-code" class="code-editor-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- پنل سمت راست - پیش‌نمایش و کنسول -->
+        <div class="right-panel">
+            <!-- کنترل‌های پیش‌نمایش -->
+            <div class="preview-controls">
+                <div class="device-preview-selector">
+                    <button class="device-btn active" data-device="desktop">
+                        <i class="fas fa-desktop"></i>
+                        <span>دسکتاپ</span>
+                    </button>
+                    <button class="device-btn" data-device="tablet">
+                        <i class="fas fa-tablet-alt"></i>
+                        <span>تبلت</span>
+                    </button>
+                    <button class="device-btn" data-device="mobile">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>موبایل</span>
+                    </button>
+                    <button class="device-btn" data-device="responsive">
+                        <i class="fas fa-columns"></i>
+                        <span>واکنش‌گرا</span>
+                    </button>
+                </div>
+                
+                <div class="preview-actions">
+                    <button class="action-btn" id="btn-refresh-preview">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="action-btn" id="btn-preview-settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- پیش‌نمایش اصلی -->
+            <div class="preview-container">
+                <div class="preview-wrapper" id="preview-wrapper">
+                    <div class="preview-zoom-controls">
+                        <button class="zoom-control-btn" id="btn-preview-zoom-in">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="zoom-control-btn" id="btn-preview-zoom-out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="zoom-control-btn" id="btn-preview-zoom-reset">
+                            <i class="fas fa-crosshairs"></i>
+                        </button>
+                        <div class="zoom-display" id="preview-zoom-level">100%</div>
+                    </div>
+                    <iframe 
+                        id="preview-frame" 
+                        class="preview-frame"
+                        sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"
+                    ></iframe>
+                    <div class="preview-overlay" id="preview-overlay"></div>
+                </div>
+            </div>
+
+            <!-- پنل پایینی - کنسول و ابزارها -->
+            <div class="bottom-panel">
+                <div class="panel-tabs">
+                    <button class="panel-tab active" data-panel="console">
+                        <i class="fas fa-terminal"></i>
+                        <span>کنسول</span>
+                    </button>
+                    <button class="panel-tab" data-panel="errors">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>خطاها</span>
+                        <span class="badge" id="error-count">0</span>
+                    </button>
+                    <button class="panel-tab" data-panel="history">
+                        <i class="fas fa-history"></i>
+                        <span>تاریخچه</span>
+                    </button>
+                    <button class="panel-tab" data-panel="performance">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>کارایی</span>
+                    </button>
+                    <button class="panel-tab" data-panel="assets">
+                        <i class="fas fa-images"></i>
+                        <span>فایل‌ها</span>
+                    </button>
+                </div>
+                
+                <div class="panel-content">
+                    <!-- کنسول -->
+                    <div class="panel-section active" id="panel-console">
+                        <div class="console-output" id="console-output"></div>
+                        <div class="console-input">
+                            <input type="text" id="console-input" placeholder="دستور JavaScript را وارد کنید (Enter برای اجرا)">
+                            <button id="btn-clear-console">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- خطاها -->
+                    <div class="panel-section" id="panel-errors">
+                        <div class="errors-list" id="errors-list"></div>
+                    </div>
+                    
+                    <!-- تاریخچه -->
+                    <div class="panel-section" id="panel-history">
+                        <div class="history-controls">
+                            <button class="btn btn-history" id="btn-history-back">
+                                <i class="fas fa-undo"></i>
+                                بازگردانی
+                            </button>
+                            <button class="btn btn-history" id="btn-history-forward">
+                                <i class="fas fa-redo"></i>
+                                تکرار
+                            </button>
+                            <input type="text" id="history-search" placeholder="جستجو در تاریخچه...">
+                        </div>
+                        <div class="history-list" id="history-list"></div>
+                    </div>
+                    
+                    <!-- کارایی -->
+                    <div class="panel-section" id="panel-performance">
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <div class="metric-label">زمان اجرا</div>
+                                <div class="metric-value" id="metric-execution-time">0ms</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-label">فریم بر ثانیه</div>
+                                <div class="metric-value" id="metric-fps">60</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-label">حافظه استفاده شده</div>
+                                <div class="metric-value" id="metric-memory">0MB</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-label">حجم کد</div>
+                                <div class="metric-value" id="metric-code-size">0KB</div>
+                            </div>
+                        </div>
+                        <div class="performance-chart">
+                            <canvas id="performance-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- فایل‌ها -->
+                    <div class="panel-section" id="panel-assets">
+                        <div class="assets-manager">
+                            <button class="btn btn-upload-asset" id="btn-upload-asset">
+                                <i class="fas fa-upload"></i>
+                                آپلود فایل
+                            </button>
+                            <div class="assets-list" id="assets-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- پنل‌های جانبی -->
+    <aside class="side-panel left-sidebar" id="file-manager-panel">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-folder-open"></i> مدیر فایل</h3>
+            <button class="btn-close-sidebar" data-panel="file-manager">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div class="file-tree" id="file-tree"></div>
+            <div class="file-actions">
+                <button class="btn btn-file-action" id="btn-new-file">
+                    <i class="fas fa-file"></i> فایل جدید
+                </button>
+                <button class="btn btn-file-action" id="btn-new-folder">
+                    <i class="fas fa-folder-plus"></i> پوشه جدید
+                </button>
+                <button class="btn btn-file-action" id="btn-upload-file">
+                    <i class="fas fa-upload"></i> آپلود فایل
+                </button>
+            </div>
+        </div>
     </aside>
 
-    <!-- ناحیه ویرایشگر -->
-    <div class="editor-area">
-      <div class="breadcrumb" id="breadcrumb">
-        <span><i class="fas fa-home"></i> پروژه من</span>
-      </div>
-      <div class="tabs-container" id="tabsContainer">
-        <!-- تب‌ها به صورت پویا اضافه می‌شوند -->
-      </div>
-      <div class="editor-container" id="editorContainer">
-        <!-- ویرایشگرها به صورت پویا اضافه می‌شوند -->
-      </div>
-    </div>
-
-    <!-- ناحیه پیش‌نمایش -->
-    <div class="preview-section" id="previewSection">
-      <div class="preview-header">
-        <h3><i class="fas fa-eye"></i> پیش‌نمایش زنده</h3>
-        <div class="preview-controls">
-          <div class="device-selector">
-            <button class="device-btn active" data-device="desktop" title="نمایش دسکتاپ">
-              <i class="fas fa-desktop"></i>
+    <aside class="side-panel right-sidebar" id="components-panel">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-puzzle-piece"></i> کتابخانه کامپوننت</h3>
+            <button class="btn-close-sidebar" data-panel="components">
+                <i class="fas fa-times"></i>
             </button>
-            <button class="device-btn" data-device="tablet" title="نمایش تبلت">
-              <i class="fas fa-tablet-alt"></i>
-            </button>
-            <button class="device-btn" data-device="mobile" title="نمایش موبایل">
-              <i class="fas fa-mobile-alt"></i>
-            </button>
-          </div>
-          <button class="btn btn-icon" id="refreshPreviewBtn" title="تازه‌سازی پیش‌نمایش">
-            <i class="fas fa-sync-alt"></i>
-          </button>
         </div>
-      </div>
-      <div class="preview-frame-container">
-        <div class="preview-frame-wrapper" id="previewWrapper">
-          <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin" title="پیش‌نمایش زنده"></iframe>
+        <div class="sidebar-content">
+            <div class="components-categories">
+                <div class="category active" data-category="all">همه</div>
+                <div class="category" data-category="ui">UI</div>
+                <div class="category" data-category="forms">فرم‌ها</div>
+                <div class="category" data-category="navigation">ناوبری</div>
+                <div class="category" data-category="media">رسانه</div>
+            </div>
+            <div class="components-grid" id="components-grid"></div>
         </div>
-      </div>
-    </div>
-  </div>
+    </aside>
 
-  <!-- کنسول -->
-  <div class="console-section" id="consoleSection">
-    <div class="console-header">
-      <div class="console-tabs">
-        <div class="console-tab active" data-tab="console">
-          <i class="fas fa-terminal"></i> کنسول
+    <!-- مودال‌ها -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> تنظیمات ویرایشگر</h3>
+                <button class="btn-close-modal" data-modal="settings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs">
+                    <div class="settings-tab active" data-tab="editor">ویرایشگر</div>
+                    <div class="settings-tab" data-tab="preview">پیش‌نمایش</div>
+                    <div class="settings-tab" data-tab="performance">کارایی</div>
+                    <div class="settings-tab" data-tab="advanced">پیشرفته</div>
+                </div>
+                
+                <div class="settings-content">
+                    <!-- تب ویرایشگر -->
+                    <div class="settings-section active" id="settings-editor">
+                        <div class="setting-item">
+                            <label>سایز فونت</label>
+                            <input type="range" min="10" max="24" value="14" id="setting-font-size">
+                            <span id="font-size-value">14px</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>تم ویرایشگر</label>
+                            <select id="setting-editor-theme">
+                                <option value="dracula">Dracula</option>
+                                <option value="monokai">Monokai</option>
+                                <option value="solarized">Solarized</option>
+                                <option value="material">Material</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>فاصله خطوط</label>
+                            <input type="range" min="1" max="2.5" step="0.1" value="1.5" id="setting-line-height">
+                            <span id="line-height-value">1.5</span>
+                        </div>
+                    </div>
+                    
+                    <!-- تب پیش‌نمایش -->
+                    <div class="settings-section" id="settings-preview">
+                        <div class="setting-item">
+                            <label>بزرگ‌نمایی پیش‌فرض</label>
+                            <select id="setting-default-zoom">
+                                <option value="100">100%</option>
+                                <option value="125">125%</option>
+                                <option value="150">150%</option>
+                                <option value="200">200%</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>رفرش خودکار</label>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-auto-refresh" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>تاخیر رفرش</label>
+                            <input type="range" min="100" max="5000" value="250" id="setting-refresh-delay">
+                            <span id="refresh-delay-value">250ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btn-save-settings">ذخیره تنظیمات</button>
+                <button class="btn btn-secondary" data-modal="settings">انصراف</button>
+            </div>
         </div>
-        <div class="console-tab" data-tab="network">
-          <i class="fas fa-network-wired"></i> شبکه
-        </div>
-        <div class="console-tab" data-tab="performance">
-          <i class="fas fa-tachometer-alt"></i> عملکرد
-        </div>
-      </div>
-      <div>
-        <button class="btn btn-icon" id="clearConsoleBtn" title="پاک کردن کنسول">
-          <i class="fas fa-trash"></i>
-        </button>
-        <button class="btn btn-icon" id="toggleConsoleBtn" title="بستن/باز کردن کنسول">
-          <i class="fas fa-chevron-down"></i>
-        </button>
-      </div>
     </div>
-    <div class="console-output" id="consoleOutput">
-      <div class="console-message info">
-        <i class="fas fa-info-circle console-icon"></i>
-        <span class="console-time">[۰۰:۰۰:۰۰]</span>
-        <span class="console-message-content">ویرایشگر کد حرفه‌ای نسخه ۴.۱ آماده است ✨</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- منوی راست کلیک -->
-  <div class="context-menu" id="contextMenu">
-    <div class="context-menu-item" data-action="rename">
-      <i class="fas fa-edit"></i>
-      <span>تغییر نام</span>
-    </div>
-    <div class="context-menu-item" data-action="delete">
-      <i class="fas fa-trash"></i>
-      <span>حذف</span>
-    </div>
-    <div class="context-menu-divider"></div>
-    <div class="context-menu-item" data-action="newFile">
-      <i class="fas fa-file-plus"></i>
-      <span>فایل جدید</span>
-    </div>
-    <div class="context-menu-item" data-action="newFolder">
-      <i class="fas fa-folder-plus"></i>
-      <span>پوشه جدید</span>
-    </div>
-    <div class="context-menu-divider"></div>
-    <div class="context-menu-item" data-action="download">
-      <i class="fas fa-download"></i>
-      <span>دانلود</span>
-    </div>
-  </div>
+    <!-- نوتیفیکیشن -->
+    <div class="notification-container" id="notification-container"></div>
 
-  <!-- مودال ایجاد فایل/پوشه -->
-  <div class="modal" id="newItemModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle"><i class="fas fa-file-plus"></i> ایجاد فایل جدید</h3>
-        <button class="modal-close" id="modalCloseBtn">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="itemName"><i class="fas fa-font"></i> نام فایل/پوشه:</label>
-          <input type="text" id="itemName" class="form-control" placeholder="مثال: index.html یا استایل‌ها" dir="auto">
-        </div>
-        <div class="form-group" id="fileTypeGroup">
-          <label for="fileType"><i class="fas fa-code"></i> نوع فایل:</label>
-          <select id="fileType" class="form-control">
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="js">جاوااسکریپت</option>
-            <option value="json">JSON</option>
-            <option value="md">مارک‌داون</option>
-            <option value="txt">متن ساده</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelCreateBtn">لغو</button>
-        <button class="btn btn-primary" id="confirmCreateBtn">ایجاد</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- نوتیفیکیشن -->
-  <div class="notification" id="notification">
-    <i class="fas fa-check-circle"></i>
-    <span class="notification-content" id="notificationText">عملیات با موفقیت انجام شد</span>
-  </div>
-
-  <!-- لودینگ -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-    <div class="loading-text">در حال بارگذاری کتابخانه‌ها...</div>
-  </div>
-
-  <!-- فایل اینپوت مخفی -->
-  <input type="file" id="fileInput" style="display: none;" multiple accept=".html,.htm,.css,.js,.json,.md,.txt">
-
-  <!-- کتابخانه‌های JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/html-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/css-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/javascript-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.11/beautify.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.11/beautify-css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.11/beautify-html.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  
-  <!-- فایل JavaScript اصلی برنامه -->
-  <script src="script.js"></script>
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
